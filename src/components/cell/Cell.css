@@ -1,0 +1,73 @@
+.cell {
+  position: relative;
+  background-color: #F7F7F7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ================== */
+/* X Cell */
+/* ================== */
+.x-cell {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  
+
+}
+
+.x-cell .cross1 {
+  position: absolute;
+  top: 50%;
+
+  border-radius: 5px;
+  height: 10px;
+  width: 100%;
+
+  transform: rotate(45deg);
+
+  background-color: #F28B82;
+}
+
+.x-cell .cross2 {
+  position: absolute;
+  top: 50%;
+
+  border-radius: 5px;
+  height: 10px;
+  width: 100%;
+
+  transform: rotate(-45deg);
+
+  background-color: #F28B82;
+}
+
+.x-cell .shadow {
+  background-color: #E0E0E0;
+  box-shadow: 0 0 2px 2px#E0E0E0;
+}
+
+
+/* ================== */
+/* O Cell */
+/* ================== */
+.o-cell {  
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: calc(100% - 50px);
+  height: calc(100% - 50px); 
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: solid 10px #A7C7E7;
+  box-shadow: 
+    -10px -10px 2px #E0E0E0,
+    inset -10px -10px 2px #E0E0E0;
+}
+
+
+
+

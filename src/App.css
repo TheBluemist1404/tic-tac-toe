@@ -1,0 +1,14 @@
+#root {
+  margin: 0;
+  padding: 0;
+  --cell-color: "#"
+}
+
+.container {
+  width: 100vw;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
