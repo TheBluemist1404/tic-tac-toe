@@ -2,7 +2,9 @@ import './Cell.css'
 
 type Cell = null | "X" | "O";
 type CellProps = {
+  id: number
   cell: Cell;
+  inWinComb: boolean
 }
 
 function XCell() {
@@ -22,13 +24,13 @@ function OCell() {
   return <div className='o-cell' style={{translate: "15px 15px"}}/>
 }
 
-export default function Cell({cell}: CellProps) {
+export default function Cell({id, cell, inWinComb}: CellProps) {
   function renderCell(cell: Cell) {
     if (!cell) return;
     if (cell === "X") return < XCell />;
     if (cell === "O") return < OCell />;
   }
-  return <div className="cell">
+  return <div id={id.toString()} className="cell" style={{backgroundColor: `${inWinComb ? "#bff887ff": "#F7F7F7"}`}}>
     {renderCell(cell)}
   </div>
 }

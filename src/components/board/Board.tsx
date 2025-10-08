@@ -13,12 +13,18 @@ type BoardProps = {
   winner: Cell | "N/A";
   setWinner: React.Dispatch<React.SetStateAction<Cell | "N/A">>;
 };
-export default function Board({ isXTurn, setIsXTurn, playBot, winner, setWinner }: BoardProps) {
+export default function Board({
+  isXTurn,
+  setIsXTurn,
+  playBot,
+  winner,
+  setWinner,
+}: BoardProps) {
   const [board, setBoard] = useState<Cell[]>(Array(9).fill(null));
   const [depth, setDepth] = useState<number>(0);
-  
+  const [winComb, setWinComb] = useState<number[] | undefined>(undefined);
 
-  function handleClick(i: number) {
+  async function handleClick(i: number) {
     if (!winner && !board[i]) {
       let newBoard = [...board];
       if (!playBot) {
@@ -29,11 +35,13 @@ export default function Board({ isXTurn, setIsXTurn, playBot, winner, setWinner 
         }
         setBoard(newBoard);
 
-        const winnerFound = getWinner(newBoard);
+        const winnerProps = getWinner(newBoard);
+        const winnerFound = winnerProps?.winner;
         if (winnerFound) {
           setWinner(winnerFound);
           if (winnerFound !== "N/A") {
-            console.log("the winner is ", winnerFound);            
+            setWinComb(winnerProps.combination);
+            console.log("the winner is ", winnerFound);
           } else {
             console.log("Game Draw");
           }
@@ -42,33 +50,39 @@ export default function Board({ isXTurn, setIsXTurn, playBot, winner, setWinner 
           setDepth((prev) => prev + 1);
         }
       } else {
-        newBoard[i] = isXTurn ? "X": "O";
+        newBoard[i] = isXTurn ? "X" : "O";
 
         setBoard(newBoard);
 
-        const winnerFound = getWinner(newBoard);
+        const winnerProps = getWinner(newBoard);
+        const winnerFound = winnerProps?.winner;
         if (winnerFound) {
           setWinner(winnerFound);
           if (winnerFound !== "N/A") {
-            console.log("the winner is ", winnerFound);            
+            setWinComb(winnerProps.combination);
+            console.log("the winner is ", winnerFound);
           } else {
             console.log("Game Draw");
           }
         } else {
-          console.log(newBoard, depth);
-          const bestMove = getBestMove(newBoard, depth + 1, false);
+          // console.log(newBoard, depth);
+          setIsXTurn(false);
+          const bestMove = await getBestMove(newBoard, depth + 1, false);
           if (bestMove !== null) {
-            newBoard[bestMove] = isXTurn ? "O": "X";
+            newBoard[bestMove] = isXTurn ? "O" : "X";
           }
-          const winnerFound = getWinner(newBoard);
+          const winnerProps = getWinner(newBoard);
+          const winnerFound = winnerProps?.winner;
           if (winnerFound) {
             if (winnerFound !== "N/A") {
+              setWinComb(winnerProps.combination);
               console.log("the winner is ", winnerFound);
               setWinner(winnerFound);
             } else {
               console.log("Game Draw");
             }
           } else {
+            setIsXTurn(true);
             setDepth((prev) => prev + 2);
           }
         }
@@ -81,14 +95,20 @@ export default function Board({ isXTurn, setIsXTurn, playBot, winner, setWinner 
     setDepth(0);
     setIsXTurn(true);
     setWinner(null);
+    setWinComb(undefined);
+  }
+
+  function renderCell() {
+    console.log(winComb)
+    return board.map((cell, i) => (
+      <Cell id={i} cell={cell} inWinComb={winComb ? winComb.includes(i): false} />
+    ));
   }
 
   return (
     <div className="board">
       <div className="board-content">
-        {board.map((cell, _) => (
-          <Cell cell={cell} />
-        ))}
+        {renderCell()}
       </div>
       <div className="vertical-divider">
         <div style={{ width: "10px", height: "100%", background: "#000" }} />
@@ -107,9 +127,19 @@ export default function Board({ isXTurn, setIsXTurn, playBot, winner, setWinner 
           <div onClick={() => handleClick(i)}></div>
         ))}
       </div>
-      {winner && <div style={{position: "absolute", bottom: "-50px", width: "500px", display: "flex", justifyContent: "center"}}>
-        <button onClick={replay}>Replay?</button>
-      </div>}
+      {winner && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: "-50px",
+            width: "500px",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <button onClick={replay}>Replay?</button>
+        </div>
+      )}
     </div>
   );
 }

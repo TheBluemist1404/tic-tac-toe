@@ -10,7 +10,8 @@ type Cell = null | "X" | "O";
 // Same idea when "O" want to make a move, try to get the minimum of the "maximums"
 
 function minimax(board: Cell[], depth: number, isMaximize: boolean, alpha: number, beta: number): number {
-  const winner = getWinner(board);
+  const winnerProps = getWinner(board);
+  const winner = winnerProps?.winner
   if (winner) {
     if (winner === "X") return (10-depth);  // X win early means better score
     if (winner === "O") return -(10-depth); // O wins early means worse score

@@ -11,10 +11,15 @@ const winSet = [
   [2,4,6]
 ]
 
-export default function getWinner(board: Cell[]): Cell | "N/A" {
+type WinnerProps = {
+  winner: Cell | "N/A"
+  combination?: number[]
+}
+
+export default function getWinner(board: Cell[]): WinnerProps | null {
   for (const [a,b,c] of winSet) {
     if (board[a] && (board[a] === board[b]) && (board[a] === board[c])) {
-      return board[a];
+      return {winner: board[a], combination: [a,b,c]};
     }
   }
 
@@ -25,6 +30,6 @@ export default function getWinner(board: Cell[]): Cell | "N/A" {
       break;
     }
   }
-  if (full) return "N/A";
+  if (full) return {winner: "N/A"};
   return null
 }
