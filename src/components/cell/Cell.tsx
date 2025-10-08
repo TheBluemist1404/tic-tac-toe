@@ -1,9 +1,9 @@
 import './Cell.css'
+import type { CellType } from '../../types/cell';
 
-type Cell = null | "X" | "O";
 type CellProps = {
   id: number
-  cell: Cell;
+  cell: CellType;
   inWinComb: boolean
 }
 
@@ -25,7 +25,7 @@ function OCell() {
 }
 
 export default function Cell({id, cell, inWinComb}: CellProps) {
-  function renderCell(cell: Cell) {
+  function renderCell(cell: CellType) {
     if (!cell) return;
     if (cell === "X") return < XCell />;
     if (cell === "O") return < OCell />;

@@ -3,15 +3,16 @@ import Cell from "../cell/Cell";
 import "./Board.css";
 import getWinner from "../../utils/get-winner";
 import getBestMove from "../../utils/minimax";
-
-type Cell = null | "X" | "O";
+import type { CellType } from "../../types/cell";
+import getRandomValidMove from "../../utils/random-move";
 
 type BoardProps = {
   isXTurn: boolean;
   setIsXTurn: React.Dispatch<React.SetStateAction<boolean>>;
   playBot: boolean;
-  winner: Cell | "N/A";
-  setWinner: React.Dispatch<React.SetStateAction<Cell | "N/A">>;
+  winner: CellType | "N/A";
+  setWinner: React.Dispatch<React.SetStateAction<CellType | "N/A">>;
+  hardMode: boolean;
 };
 export default function Board({
   isXTurn,
@@ -19,8 +20,9 @@ export default function Board({
   playBot,
   winner,
   setWinner,
+  hardMode,
 }: BoardProps) {
-  const [board, setBoard] = useState<Cell[]>(Array(9).fill(null));
+  const [board, setBoard] = useState<CellType[]>(Array(9).fill(null));
   const [depth, setDepth] = useState<number>(0);
   const [winComb, setWinComb] = useState<number[] | undefined>(undefined);
 
@@ -67,10 +69,18 @@ export default function Board({
         } else {
           // console.log(newBoard, depth);
           setIsXTurn(false);
-          const bestMove = await getBestMove(newBoard, depth + 1, false);
-          if (bestMove !== null) {
-            newBoard[bestMove] = isXTurn ? "O" : "X";
+          if (hardMode) {
+            const bestMove = await getBestMove(newBoard, depth + 1, false);
+            if (bestMove !== null) {
+              newBoard[bestMove] = isXTurn ? "O" : "X";
+            }
+          } else {
+            const validMove = getRandomValidMove(newBoard);
+            if (validMove !== null) {
+              newBoard[validMove] = isXTurn ? "O" : "X";
+            }
           }
+
           const winnerProps = getWinner(newBoard);
           const winnerFound = winnerProps?.winner;
           if (winnerFound) {
@@ -99,17 +109,18 @@ export default function Board({
   }
 
   function renderCell() {
-    console.log(winComb)
     return board.map((cell, i) => (
-      <Cell id={i} cell={cell} inWinComb={winComb ? winComb.includes(i): false} />
+      <Cell
+        id={i}
+        cell={cell}
+        inWinComb={winComb ? winComb.includes(i) : false}
+      />
     ));
   }
 
   return (
     <div className="board">
-      <div className="board-content">
-        {renderCell()}
-      </div>
+      <div className="board-content">{renderCell()}</div>
       <div className="vertical-divider">
         <div style={{ width: "10px", height: "100%", background: "#000" }} />
         <div style={{ width: "10px", height: "100%", background: "#000" }} />

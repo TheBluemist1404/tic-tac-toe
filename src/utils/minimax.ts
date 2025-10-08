@@ -1,6 +1,5 @@
 import getWinner from "./get-winner";
-
-type Cell = null | "X" | "O";
+import type { CellType } from "../types/cell";
 
 // Minimax algorithm to get score for each state of the game, depends on "isMaximize"
 // The idea is to maximize score for X and minimize score for "O"
@@ -9,7 +8,7 @@ type Cell = null | "X" | "O";
 // Equivalently, put "O" into its worst position
 // Same idea when "O" want to make a move, try to get the minimum of the "maximums"
 
-function minimax(board: Cell[], depth: number, isMaximize: boolean, alpha: number, beta: number): number {
+function minimax(board: CellType[], depth: number, isMaximize: boolean, alpha: number, beta: number): number {
   const winnerProps = getWinner(board);
   const winner = winnerProps?.winner
   if (winner) {
@@ -45,7 +44,7 @@ function minimax(board: Cell[], depth: number, isMaximize: boolean, alpha: numbe
   }
 }
 
-export default function getBestMove(board: Cell[], depth:number, isMaximize: boolean):number | null {
+export default function getBestMove(board: CellType[], depth:number, isMaximize: boolean):number | null {
   let bestMove: number = 0;
   let bestScore: number
 

@@ -1,4 +1,4 @@
-type Cell = null | "X" | "O";
+import type { CellType } from "../types/cell"
 
 const winSet = [
   [0,1,2],
@@ -12,11 +12,11 @@ const winSet = [
 ]
 
 type WinnerProps = {
-  winner: Cell | "N/A"
+  winner: CellType | "N/A"
   combination?: number[]
 }
 
-export default function getWinner(board: Cell[]): WinnerProps | null {
+export default function getWinner(board: CellType[]): WinnerProps | null {
   for (const [a,b,c] of winSet) {
     if (board[a] && (board[a] === board[b]) && (board[a] === board[c])) {
       return {winner: board[a], combination: [a,b,c]};

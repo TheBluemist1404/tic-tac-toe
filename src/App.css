@@ -18,6 +18,12 @@
 .game-status {
   width: 500px;
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.game-mode{
+  display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  gap: 10px;
 }
