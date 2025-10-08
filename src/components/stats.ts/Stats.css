@@ -1,0 +1,6 @@
+.stats-container {
+  background-color: rgb(85, 102, 117);
+  box-sizing: border-box;
+  width: 500px;  
+  padding: 20px;
+}

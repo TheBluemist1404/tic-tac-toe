@@ -1,6 +1,7 @@
 import './App.css'
 import Board from './components/board/Board'
 import { useEffect, useState } from 'react';
+import Stats from './components/stats.ts/Stats';
 
 type Cell = null | "X" | "O";
 
@@ -25,6 +26,7 @@ function App() {
 
   return (
     <div className='container' style={{background: isXTurn ? "#F28B82": "#A7C7E7"}}>
+      <Stats winner={winner} />
       <div className='game-status'>
         <div className='game-mode'>
           <button onClick={()=>setPlayBot(!playBot)}>Mode: {playBot ? "Computer": "2 playes"}</button>
