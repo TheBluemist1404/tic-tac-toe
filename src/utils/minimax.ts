@@ -9,7 +9,7 @@ type Cell = null | "X" | "O";
 // Equivalently, put "O" into its worst position
 // Same idea when "O" want to make a move, try to get the minimum of the "maximums"
 
-function minimax(board: Cell[], depth: number, isMaximize: boolean): number {
+function minimax(board: Cell[], depth: number, isMaximize: boolean, alpha: number, beta: number): number {
   const winner = getWinner(board);
   if (winner) {
     if (winner === "X") return (10-depth);  // X win early means better score
@@ -23,8 +23,10 @@ function minimax(board: Cell[], depth: number, isMaximize: boolean): number {
       if (board[i]) continue;
       let newBoard = [...board];
       newBoard[i] = "X";
-      const score = minimax(newBoard, depth + 1, !isMaximize); // true -> false, next turn is "O"
+      const score = minimax(newBoard, depth + 1, !isMaximize, alpha, beta); // true -> false, next turn is "O"
       maxScore = Math.max(maxScore, score);
+      alpha = Math.max(maxScore, alpha); // This says "X can get min score of alpha"
+      if (beta <= alpha) break;// This branch could not get any greater than alpha, so why dig deeper? Lets move to next branch
     }
     return maxScore;
   } else { // "O" is making move here
@@ -33,8 +35,10 @@ function minimax(board: Cell[], depth: number, isMaximize: boolean): number {
       if (board[i]) continue;
       let newBoard = [...board];
       newBoard[i] = "O";
-      const score = minimax(newBoard, depth + 1, !isMaximize); // false -> true, next turn is "X"
+      const score = minimax(newBoard, depth + 1, !isMaximize, alpha, beta); // false -> true, next turn is "X"
       minScore = Math.min(minScore, score);
+      beta = Math.min(minScore, beta); // This says "O can get max score of beta"
+      if (alpha >= beta) break; // This branch could not get any less than beta, so why dig deeper? Lets move to next branch
     }
     return minScore;
   }
@@ -55,7 +59,7 @@ export default function getBestMove(board: Cell[], depth:number, isMaximize: boo
       if (board[i]) continue;
       let newBoard = [...board];
       newBoard[i] = "X";
-      const evalScore = minimax(newBoard, depth + 1, !isMaximize);
+      const evalScore = minimax(newBoard, depth + 1, !isMaximize, -Infinity, Infinity);
       if (evalScore > bestScore) {
         bestScore = evalScore;
         bestMove = i;
@@ -69,7 +73,7 @@ export default function getBestMove(board: Cell[], depth:number, isMaximize: boo
       if (board[i]) continue;
       let newBoard = [...board];
       newBoard[i] = "O";
-      const evalScore = minimax(newBoard, depth + 1, !isMaximize);
+      const evalScore = minimax(newBoard, depth + 1, !isMaximize, -Infinity, Infinity);
       if (evalScore < bestScore) {
         bestScore = evalScore;
         bestMove = i;
