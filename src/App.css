@@ -9,6 +9,15 @@
   min-height: 100vh;
 
   display: flex;
+  flex-direction: column;
+  gap: 10px;
   justify-content: center;
   align-items: center;
+}
+
+.game-status {
+  width: 500px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
