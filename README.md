@@ -43,7 +43,7 @@ We demonstrate 2 modes: `2 players` mode and `Computer` mode.
 Additonally, the gameplay with Computer may categorised into 2 levels: `Easy` and `Hard`
 - Easy Mode: Computer would make random valid move, so it is (should be) easy to win most of the time.
 - Hard Mode: Implement with ***minimax + A/B pruning***, so should be unbeatable.
-```
+```js
 // Minimax algorithm to get score for each state of the game, depends on "isMaximize"
 // The idea is to maximize score for X and minimize score for "O"
 // If after the move is "O" turn, whose boards score would be all "minimums"
@@ -99,7 +99,7 @@ To better depict how **minimax algorithm** actually work behind the scene, we al
 - Implementation of **nodes evaulation**: We pass a `setNode` from root (`App.tsx` -> `Board.tsx` -> `minimax.ts`) so for each of the node (equivalent to each call to `function minimax`) we increment the number of nodes;
 - Implementation of **thinking time**: Simple wrap `getBestMove` in `performance.now()` to get `start` and `end` then `setCalculateTime(end-start)` (the setter passed down from `App.tsx` -> `Board.tsx`)
 The code looks like this
-```
+```js
 setNode(_ => 0); // Reset node for re-evaluation
 const start = performance.now()
 const bestMove = getBestMove(newBoard, depth + 1, false, setNode);
