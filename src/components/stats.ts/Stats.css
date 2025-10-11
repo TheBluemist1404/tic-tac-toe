@@ -1,6 +1,17 @@
 .stats-container {
-  background-color: rgb(85, 102, 117);
+  background-color: rgb(51, 66, 78);
   box-sizing: border-box;
   width: 500px;  
   padding: 20px;
+}
+
+@media screen and (max-width: 500px){
+  .stats-container {
+    width: 100vw;
+  }
+  
+}
+
+.stats-container .streak {
+  width: max-content;
 }

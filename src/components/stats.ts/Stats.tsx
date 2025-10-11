@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./Stats.css";
 import type { CellType } from "../../types/cell";
 import { getStats, setStats } from "../../utils/stats";
+import Streak from "./Streak";
 
 export default function Stats({ winner }: { winner: CellType | "N/A" }) {
   const {
@@ -49,11 +50,17 @@ export default function Stats({ winner }: { winner: CellType | "N/A" }) {
 
   return (
     <div className="stats-container">
-      <p>Stats for player X</p>
+      <h2>Stats for player X</h2>
+      <div style={{display: "flex", flexDirection: "row", gap: "30px", alignItems: "center"}}>
+        <div style={{width: "max-content"}}>
+          {/* This avoid the Streak-bar push back */}
+          <div className="streak">Streak: {streak}</div>
+        </div>
+        <Streak streak={streak} />
+      </div>
       <div>Wins: {wins}</div>
       <div>Losses: {losses}</div>
       <div>Draws: {draws}</div>
-      <div>Streak: {streak}</div>
     </div>
   );
 }

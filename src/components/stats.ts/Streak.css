@@ -1,0 +1,16 @@
+.streak-bar {
+  background-color: rgb(230, 213, 213);
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+}
+
+.streak-bar .streak-progress {
+  height: 100%;
+  border-radius: 5px;
+  background-color: rgb(231, 72, 72);
+}
+
+.flame {
+  width: 30px;
+}

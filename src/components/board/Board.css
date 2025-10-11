@@ -6,6 +6,13 @@
   /* padding: 10px; */
 }
 
+@media screen and (max-width: 500px){
+  .board {
+    width: 100vw;
+    height: 100vw;
+  }
+}
+
 .board .vertical-divider {
   position: absolute;
   width: 100%;
