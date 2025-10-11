@@ -95,7 +95,7 @@ We also demonstate gameplay statistics (specifically for player X only). We trac
 
 
 ### Metrics for Hard mode
-To better depicts how minimax algorithm actually work behind the scene, we also provide the metrics (*nodes evaluated* and *thinking time*)
+To better depict how **minimax algorithm** actually work behind the scene, we also provide the metrics (*nodes evaluated* and *thinking time*)
 - Implementation of **nodes evaulation**: We pass a `setNode` from root (`App.tsx` -> `Board.tsx` -> `minimax.ts`) so for each of the node (equivalent to each call to `function minimax`) we increment the number of nodes;
 - Implementation of **thinking time**: Simple wrap `getBestMove` in `performance.now()` to get `start` and `end` then `setCalculateTime(end-start)` (the setter passed down from `App.tsx` -> `Board.tsx`)
 The code looks like this
