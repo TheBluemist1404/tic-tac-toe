@@ -8,7 +8,8 @@ import type { CellType } from "../types/cell";
 // Equivalently, put "O" into its worst position
 // Same idea when "O" want to make a move, try to get the minimum of the "maximums"
 
-function minimax(board: CellType[], depth: number, isMaximize: boolean, alpha: number, beta: number): number {
+function minimax(board: CellType[], depth: number, isMaximize: boolean, alpha: number, beta: number, setNode: React.Dispatch<React.SetStateAction<number>>): number {
+  setNode(prev => prev + 1);
   const winnerProps = getWinner(board);
   const winner = winnerProps?.winner
   if (winner) {
@@ -23,7 +24,7 @@ function minimax(board: CellType[], depth: number, isMaximize: boolean, alpha: n
       if (board[i]) continue;
       let newBoard = [...board];
       newBoard[i] = "X";
-      const score = minimax(newBoard, depth + 1, !isMaximize, alpha, beta); // true -> false, next turn is "O"
+      const score = minimax(newBoard, depth + 1, !isMaximize, alpha, beta, setNode); // true -> false, next turn is "O"
       maxScore = Math.max(maxScore, score);
       alpha = Math.max(maxScore, alpha); // This says "X can get min score of alpha"
       if (beta <= alpha) break;// This branch could not get any greater than alpha, so why dig deeper? Lets move to next branch
@@ -35,7 +36,7 @@ function minimax(board: CellType[], depth: number, isMaximize: boolean, alpha: n
       if (board[i]) continue;
       let newBoard = [...board];
       newBoard[i] = "O";
-      const score = minimax(newBoard, depth + 1, !isMaximize, alpha, beta); // false -> true, next turn is "X"
+      const score = minimax(newBoard, depth + 1, !isMaximize, alpha, beta, setNode); // false -> true, next turn is "X"
       minScore = Math.min(minScore, score);
       beta = Math.min(minScore, beta); // This says "O can get max score of beta"
       if (alpha >= beta) break; // This branch could not get any less than beta, so why dig deeper? Lets move to next branch
@@ -44,7 +45,7 @@ function minimax(board: CellType[], depth: number, isMaximize: boolean, alpha: n
   }
 }
 
-export default function getBestMove(board: CellType[], depth:number, isMaximize: boolean):number | null {
+export default function getBestMove(board: CellType[], depth:number, isMaximize: boolean, setNode: React.Dispatch<React.SetStateAction<number>>):number | null {
   let bestMove: number = 0;
   let bestScore: number
 
@@ -59,7 +60,7 @@ export default function getBestMove(board: CellType[], depth:number, isMaximize:
       if (board[i]) continue;
       let newBoard = [...board];
       newBoard[i] = "X";
-      const evalScore = minimax(newBoard, depth + 1, !isMaximize, -Infinity, Infinity);
+      const evalScore = minimax(newBoard, depth + 1, !isMaximize, -Infinity, Infinity, setNode);
       if (evalScore > bestScore) {
         bestScore = evalScore;
         bestMove = i;
@@ -73,7 +74,7 @@ export default function getBestMove(board: CellType[], depth:number, isMaximize:
       if (board[i]) continue;
       let newBoard = [...board];
       newBoard[i] = "O";
-      const evalScore = minimax(newBoard, depth + 1, !isMaximize, -Infinity, Infinity);
+      const evalScore = minimax(newBoard, depth + 1, !isMaximize, -Infinity, Infinity, setNode);
       if (evalScore < bestScore) {
         bestScore = evalScore;
         bestMove = i;

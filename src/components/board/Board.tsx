@@ -13,6 +13,8 @@ type BoardProps = {
   winner: CellType | "N/A";
   setWinner: React.Dispatch<React.SetStateAction<CellType | "N/A">>;
   hardMode: boolean;
+  setNode: React.Dispatch<React.SetStateAction<number>>;
+  setCalculateTime: React.Dispatch<React.SetStateAction<number>>;
 };
 export default function Board({
   isXTurn,
@@ -21,6 +23,8 @@ export default function Board({
   winner,
   setWinner,
   hardMode,
+  setNode,
+  setCalculateTime
 }: BoardProps) {
   const [board, setBoard] = useState<CellType[]>(Array(9).fill(null));
   const [depth, setDepth] = useState<number>(0);
@@ -67,10 +71,15 @@ export default function Board({
             console.log("Game Draw");
           }
         } else {
-          // console.log(newBoard, depth);
+          // console.log(newBoard, depth);          
           setIsXTurn(false);
           if (hardMode) {
-            const bestMove = await getBestMove(newBoard, depth + 1, false);
+            setNode(_ => 0); // Reset node for re-evaluation
+            const start = performance.now()
+            const bestMove = getBestMove(newBoard, depth + 1, false, setNode);
+            const end = performance.now();
+            setCalculateTime((end-start));
+            
             if (bestMove !== null) {
               newBoard[bestMove] = isXTurn ? "O" : "X";
             }
@@ -140,10 +149,10 @@ export default function Board({
       </div>
       {winner && (
         <div
+          className="replay-button"
           style={{
             position: "absolute",
             bottom: "-50px",
-            width: "500px",
             display: "flex",
             justifyContent: "center",
           }}

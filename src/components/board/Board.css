@@ -6,10 +6,18 @@
   /* padding: 10px; */
 }
 
+.replay-button {
+  width: 500px;
+}
+
 @media screen and (max-width: 500px){
   .board {
     width: 100vw;
     height: 100vw;
+  }
+
+  .replay-button {
+    width: 100vw;
   }
 }
 
